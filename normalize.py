@@ -10,10 +10,21 @@ for cyrillic, latin in zip(CYRILLIC_SYMBOLS, TRANSLATION):
     TRANS[ord(cyrillic)] = latin
     TRANS[ord(cyrillic.upper())] = latin.upper()
 
+
 def normalize(name: str) -> str:
     translate_word = str(re.sub(r'\W', '_', name.translate(TRANS)))
-    translate_word = re.sub(r'_'+Path(name).suffix[1:], '.'+Path(name).suffix[1:], translate_word)
+    # first version
+    translate_word = change_name(translate_word)
+
+    # second version
+    # translate_word = re.sub(r'_'+Path(name).suffix[1:], '.'+Path(name).suffix[1:], translate_word) 
+    
     return translate_word
+
+def change_name(translate_word):
+    index_str = translate_word.rfind('_')
+    result = translate_word.replace(translate_word[index_str:], '.'+translate_word[index_str+1:])
+    return result
 
     
     
